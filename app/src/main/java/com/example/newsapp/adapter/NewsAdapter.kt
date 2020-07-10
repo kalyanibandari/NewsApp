@@ -4,8 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.newsapp.R
 import com.example.newsapp.model.Articles
 
@@ -26,11 +29,16 @@ class NewsAdapter(val context: Context, val articles: List<Articles>?) : Recycle
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val articlesTitle = itemView.findViewById<TextView>(R.id.title_text)
-        val articlesDescription = itemView.findViewById<TextView>(R.id.description_text)
+        val articlesImage = itemView.findViewById<ImageView>(R.id.news_image)
+        //val articlesDescription = itemView.findViewById<TextView>(R.id.description_text)
 
         fun bindNews(articles: Articles){
             articlesTitle.text = articles.title
-            articlesDescription.text = articles.description
+            //articlesDescription.text = articles.description
+            Glide.with(context).load(articles.urlToImage)
+                .apply(RequestOptions().centerCrop())
+                .into(articlesImage)
+
         }
     }
 
