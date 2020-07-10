@@ -12,11 +12,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.newsapp.R
 import com.example.newsapp.model.Articles
 
-class NewsAdapter(val context: Context, val articles: List<Articles>?) : RecyclerView.Adapter<NewsAdapter.Holder>() {
+class NewsAdapter(val context: Context, val articles: List<Articles>?, val itemClick: (Articles) -> Unit) : RecyclerView.Adapter<NewsAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(context).inflate(R.layout.news_list_item, parent, false)
-        return Holder(view)
+        return Holder(view, itemClick)
     }
 
     override fun getItemCount(): Int {
@@ -27,17 +27,17 @@ class NewsAdapter(val context: Context, val articles: List<Articles>?) : Recycle
         holder.bindNews(articles?.get(position)!!)
     }
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View, val itemClick: (Articles) -> Unit) : RecyclerView.ViewHolder(itemView) {
         val articlesTitle = itemView.findViewById<TextView>(R.id.title_text)
         val articlesImage = itemView.findViewById<ImageView>(R.id.news_image)
-        //val articlesDescription = itemView.findViewById<TextView>(R.id.description_text)
 
         fun bindNews(articles: Articles){
             articlesTitle.text = articles.title
-            //articlesDescription.text = articles.description
             Glide.with(context).load(articles.urlToImage)
                 .apply(RequestOptions().centerCrop())
                 .into(articlesImage)
+
+            itemView.setOnClickListener { itemClick(articles) }
 
         }
     }

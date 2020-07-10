@@ -1,9 +1,12 @@
-package com.example.newsapp
+package com.example.newsapp.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.webkit.WebView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.newsapp.R
 import com.example.newsapp.adapter.NewsAdapter
 import com.example.newsapp.model.News
 import com.example.newsapp.service.RetrofitInstance
@@ -33,7 +36,13 @@ class MainActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<News>, response: Response<News>) {
 
-                adapter = NewsAdapter(this@MainActivity, response.body()?.articles)
+                adapter = NewsAdapter(this@MainActivity, response.body()?.articles){articles ->
+                    Toast.makeText(this@MainActivity, "clicked", Toast.LENGTH_SHORT).show()
+                    val webViewIntent = Intent(this@MainActivity, WebViewActivity::class.java)
+                    webViewIntent.putExtra("url", articles.url)
+                    startActivity(webViewIntent)
+
+                }
                 adapter.notifyDataSetChanged()
                 newsRecyclerView.adapter = adapter
 
