@@ -1,15 +1,11 @@
 package com.example.newsapp
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.adapter.NewsAdapter
-import com.example.newsapp.model.Articles
 import com.example.newsapp.model.News
-import com.example.newsapp.service.GetNewsDataService
 import com.example.newsapp.service.RetrofitInstance
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -37,24 +33,18 @@ class MainActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<News>, response: Response<News>) {
 
-                /*adapter = NewsAdapter(this@MainActivity, response.body() as List<News>)
+                adapter = NewsAdapter(this@MainActivity, response.body()?.articles)
                 adapter.notifyDataSetChanged()
-                newsRecyclerView.adapter = adapter*/
+                newsRecyclerView.adapter = adapter
 
-                /*if(response.isSuccessful) {
-                    val newsList = response.body()!!
-                    newsRecyclerView.adapter = NewsAdapter(this@MainActivity, newsList)
-                    Toast.makeText(this@MainActivity, "success", Toast.LENGTH_SHORT).show()
-                }*/
                 Toast.makeText(this@MainActivity, "success", Toast.LENGTH_SHORT).show()
-                status_text.text = response.body()?.totalResults
+                //status_text.text = response.body()?.status
 
             }
 
             override fun onFailure(call: Call<News>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "failed", Toast.LENGTH_SHORT).show()
             }
-
 
         })
     }

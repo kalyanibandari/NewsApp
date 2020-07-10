@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
-import com.example.newsapp.model.News
+import com.example.newsapp.model.Articles
 
-class NewsAdapter(val context : Context, val news : List<News>) : RecyclerView.Adapter<NewsAdapter.Holder>() {
+class NewsAdapter(val context: Context, val articles: List<Articles>?) : RecyclerView.Adapter<NewsAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(context).inflate(R.layout.news_list_item, parent, false)
@@ -17,20 +17,20 @@ class NewsAdapter(val context : Context, val news : List<News>) : RecyclerView.A
     }
 
     override fun getItemCount(): Int {
-        return news.count()
+        return articles?.count()!!
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bindNews(news[position])
+        holder.bindNews(articles?.get(position)!!)
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val newsTitle = itemView.findViewById<TextView>(R.id.title_text)
-        val newsDescription = itemView.findViewById<TextView>(R.id.description_text)
+        val articlesTitle = itemView.findViewById<TextView>(R.id.title_text)
+        val articlesDescription = itemView.findViewById<TextView>(R.id.description_text)
 
-        fun bindNews(news: News){
-            /*newsTitle.text = news.status
-            newsDescription.text = news.totalResults*/
+        fun bindNews(articles: Articles){
+            articlesTitle.text = articles.title
+            articlesDescription.text = articles.description
         }
     }
 
